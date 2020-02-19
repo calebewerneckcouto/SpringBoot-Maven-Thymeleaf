@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+<meta charset="UTF-8">
+<title>Programa SpringBoot</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+ 
+ <style type="text/css">
+ 
+ 
+ table.striped>tbody>tr:nth-child(odd) {
+ 
+ background-color: rgba(158, 154, 154, 0.5);
+	
+}
+
+form input[type=submit]{
+color: white;
+
+}
+ 
+ 
+ </style>
+ 
+
+</head>
+<body>
+<center><h3>PIB LAGOA SANTA</h3><br/></center>
+
+
+<center><H5>DIZIMOS E OFERTAS</H5>
+  <a class="waves-effect waves-light btn" href="/cadastropessoa">CADASTRO DE MEMBROS</a></center>
+   
+<div class="row"></center>
+
+<br/>
+       <div th:each = "m : ${msg}">
+       
+       <span  th:text = "${m}"></span>
+       
+       
+       </div>
+
+<br/>
+
+<fieldset>
+<div th:each="p : ${pessoaobj}">
+
+<div class="row" >
+
+
+<p>ID: <BR/>   <span th:text=${p.id}></span></p>
+ <p>NOME:<BR/> <span  th:text=${p.nome}></span></p>
+<p>FUNÇÃO: <BR/>  <span th:text=${p.funcao}></span></p>
+
+
+
+
+<br/>
+
+
+
+<fieldset>
+
+<div class="row">
+<form name="formulario"   th:object="${pessoaobj}"       th:action="@{/adddizimoPessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" method="post" class="col s12"  onsubmit="return validarCampos()? true : false" >
+
+
+
+
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="dizimo"  >NOME:</label>
+<input id="nome"   th:field=*{nome}  readonly="readonly"  name="nome" class="validate">
+</div>
+</div>
+
+
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="dizimo"  >DIZIMO:</label>
+<input placeholder="Informe o valor do Dizimo" id="dizimo" name="dizimo" class="validate">
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="data"  >DATA:</label>
+<input placeholder="Informe a Data" id="data" name="data" class="validate">
+</div>
+</div>
+
+
+
+<div class="input-field col s12">
+<label class="active" for="tipomissoes"  >TIPO DE MISSÕES:</label>
+<input placeholder="MUNICIPAL,ESTADUAL,NACIONAL " id="tipomissoes" name="tipomissoes" class="validate">
+</div>
+
+
+<div class="input-field col s12">
+<label class="active" for="missoes"  >VALOR MISSÕES:</label>
+<input placeholder="Informe o Valor " id="missoes" name="missoes" class="validate">
+</div>
+
+
+
+<div class="input-field col s12">
+<label class="active" for="beneficencia"  >BENEFICÊNCIA:</label>
+<input placeholder="Informe o Valor" id="beneficencia" name="beneficencia" class="validate">
+</div>
+<div class="input-field col s12">
+<label class="active" for="construcao"  >CONSTRUÇÃO:</label>
+<input placeholder="Informe o Valor" id="construcao" name="construcao" class="validate">
+</div>
+<div class="input-field col s12">
+<label class="active" for="oferta"  >OFERTA:</label>
+<input placeholder="Informe o Valor" id="oferta" name="oferta" class="validate">
+
+<div class="input-field col s12">
+<label class="active" for="outras"  >OUTRAS:</label>
+<input   placeholder="Informe o Valor" id="outras" name="outras" class="validate">
+
+
+<div class="input-field col s12">
+<label class="active" >FORMA DE CONTRIBUIÇÃO</label>
+<select for="contribuicao"  class="browser-default"    onchange="calcular()"  id="contribuicao" name="contribuicao" >
+
+<option  th:each= "c : ${maquinas}"  th:value="${c.porcentagem}" th:text="${c.descricao}"  />
+
+
+</select>
+
+
+
+
+
+<div class="input-field col s12">
+<label class="active" for="porcentagem"  >PORCENTAGEM (%):</label>
+<input  readonly="readonly"  id="porcentagem" name="porcentagem" class="validate">
+
+
+
+<div class="input-field col s12">
+<label class="active" for="encargo"  >ENCARGO MAQUINA:</label>
+<input   readonly="readonly" id="encargo" name="encargo" class="validate">
+
+
+
+</div>
+
+
+<div class="input-field col s12">
+<label class="active" for="total"  >TOTAL:</label>
+<input   readonly="readonly" id="total" name="total" class="validate">
+
+
+
+</div>
+</div>
+
+	
+<input  onclick="calcular()"  class="waves-effect waves-light btn" type="submit" value="Adicionar">
+
+</div>
+
+
+</form>
+</div>
+</fieldset>
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	<fieldset>
+	
+	
+	<table class="striped">
+     <th>NOME</th>
+	<th>DIZIMO</th>
+	<th>DATA</th>
+	<th>TIPO DE MISSÕES</th>
+	<th>MISSÕES</th>
+	<th>BENEFICENCIA</th>
+	<th>CONSTRUÇÃO</th>
+	<th>OFERTA</th>
+	<th>OUTRAS</th>
+	<th>ENCARGO MAQUINA</th>
+	<th>TOTAL</th>
+	<th>EXCLUIR</th>
+	
+	
+
+<tr th:each="dizimo : ${dizimos}">
+<td th:text="${dizimo.nome}"></td>
+<td th:text="${dizimo.dizimo}"></td>
+<td th:text="${dizimo.data}"></td>
+<td th:text="${dizimo.tipomissoes}"></td>
+<td th:text="${dizimo.missoes}"></td>
+<td th:text="${dizimo.beneficencia}"></td>
+<td th:text="${dizimo.construcao}"></td>
+<td th:text="${dizimo.oferta}"></td>
+<td th:text="${dizimo.outras}"></td>
+<td th:text="${dizimo.encargo}"></td>
+<td th:text="${dizimo.total}"></td>
+
+<td><a th:href="@{/removerdizimo/{iddizimo}(iddizimo=${dizimo.id})}" >Excluir</a></td>
+ 
+</tr>
+<th>TOTAL DIZIMOS</th>
+<td th:text="${#numbers.formatCurrency(#aggregates.sum(dizimos.![total]))}">R$ 180,00</td>
+
+
+</table>
+
+</fieldset>
+
+
+
+
+
+<script type="text/javascript">
+
+function calcular(){
+	
+	
+	var soma;
+	
+	 
+	soma = Number(document.formulario.dizimo.value) + Number(document.formulario.missoes.value) + Number(document.formulario.beneficencia.value) + Number(document.formulario.construcao.value)+Number(document.formulario.oferta.value) +Number(document.formulario.outras.value);
+	 document.formulario.total.value = soma - (soma * Number(document.formulario.porcentagem.value))/100;
+	
+	 
+	 
+	 
+	 document.formulario.porcentagem.value =  document.formulario.contribuicao.value;  
+	 
+	 document.formulario.encargo.value = soma * Number(document.formulario.porcentagem.value)/100;
+	 
+	 
+}
+
+
+
+</script>
+
+
+   
+</div>
+	
+	<script type="text/javascript">
+	
+	function validarCampos(){
+		
+		data = document.getElementById('data').value;
+		
+		
+		if(data === ''){
+			alert('Data deve ser Informada');
+			return false;
+		}if(porcentagem === ''){
+			alert('Favor selecionar Forma de Contribuição');
+			return false;
+		}
+		return true;
+	}
+	
+	</script>
+</body>
+</html>

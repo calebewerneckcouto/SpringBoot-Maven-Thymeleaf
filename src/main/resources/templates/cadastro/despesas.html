@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+<head>
+<meta charset="UTF-8">
+<title>Programa SpringBoot</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+ 
+ <style type="text/css">
+ 
+ 
+ table.striped>tbody>tr:nth-child(odd) {
+ 
+ background-color: rgba(158, 154, 154, 0.5);
+	
+}
+
+form input[type=submit]{
+color: white;
+
+}
+ 
+ 
+ </style>
+ 
+
+</head>
+<body>
+<center><h3>PIB LAGOA SANTA</h3><br/></center>
+<center><H5>DESPESAS</H5>
+  <a class="waves-effect waves-light btn" href="/cadastropessoa">CADASTRO DE MEMBROS</a></center>
+
+
+<div class="row">
+
+<br/>
+       <div th:each = "m : ${msg}">
+       
+       <span  th:text = "${m}"></span>
+       
+       
+       </div>
+
+<br/>
+
+<fieldset>
+
+<div th:each="p : ${pessoaobj}">
+
+<div class="row" >
+
+
+<p>ID: <BR/>   <span th:text=${p.id}></span></p>
+<p>NOME:  <BR/>  <span th:text=${p.nome}></span></p>
+<p>FUNÇÃO: <BR/>  <span th:text=${p.funcao}></span></p>
+
+
+
+</div>
+</fieldset>
+
+<br/>
+
+<fieldset>
+<div class="row">
+<form th:action="@{/addespesasPessoa/{pessoaid}(pessoaid=${pessoaobj.id})}"  th:object="${pessoaobj}"   method="post" class="col s12"  onsubmit="return validarCampos()? true : false">
+
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="dizimo"  >NOME:</label>
+<input id="nome"   th:field=*{nome}  readonly="readonly"  name="nome" class="validate">
+</div>
+</div>
+
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="data"  >DATA:</label>
+<input placeholder="Informe a Data" id="data" name="data" class="validate">
+</div>
+</div>
+
+
+
+
+
+<div class="input-field col s12">
+<label class="active" for="descricao"  >DESCRIÇÃO:</label>
+<input placeholder="Informe a Descrição da Despesa " id="descricao" name="descricao" class="validate">
+</div>
+
+<div class="input-field col s12">
+<label class="active" for="outras"  >VALOR:</label>
+<input placeholder="Informe o Valor" id="valor" name="valor" class="validate">
+
+
+
+</div>
+<input class="waves-effect waves-light btn" type="submit" value="Adicionar">
+</div>
+
+
+</form>
+</div>
+
+
+
+
+</fieldset>
+
+
+
+
+
+
+	
+	
+	
+	</div>
+	</div>
+	</form>
+	
+	
+	
+	
+
+	</table>
+	<fieldset>
+	<table class="striped">
+
+	<th>NOME</th>
+	<th>DATA</th>
+	<th>DESCRIÇÃO</th>
+	<th>VALOR</th>
+	
+	<th>EXCLUIR</th>
+	
+	
+
+<tr th:each="despesa : ${despesas}">
+<td th:text="${despesa.nome}"></td>
+<td th:text="${despesa.data}"></td>
+<td th:text="${despesa.descricao}"></td>
+<td th:text="${despesa.valor}"></td>
+
+  
+
+<td><a th:href="@{/removerdespesa/{iddespesa}(iddespesa=${despesa.id})}" >Excluir</a></td>
+
+
+
+</tr>
+
+<th>TOTAL DESPESAS</th>
+<td th:text="${#numbers.formatCurrency(#aggregates.sum(despesas.![valor]))}">R$ 180,00</td>
+
+</table>
+</div>
+	</fieldset>
+	
+
+
+	
+	<script type="text/javascript">
+	
+	function validarCampos(){
+		
+		data = document.getElementById('data').value;
+		
+		
+		if(data === ''){
+			alert('Data deve ser Informada');
+			return false;
+		}
+		return true;
+	}
+	
+	</script>
+	
+</body>
+</html>

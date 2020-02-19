@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	
+<head>
+<meta charset="UTF-8">
+<title>Programa SpringBoot</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+
+  <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+ 
+ <style type="text/css">
+ 
+ 
+ table.striped>tbody>tr:nth-child(odd) {
+ 
+ background-color: rgba(158, 154, 154, 0.5);
+	
+}
+
+form input[type=submit]{
+color: white;
+
+}
+ 
+ 
+ </style>
+ 
+
+</head>
+<body>
+<center><h3>PIB LAGOA SANTA</h3><br/></center>
+
+
+<center><H5>RELATÓRIO GERAL</H5>
+  <a class="waves-effect waves-light btn" href="/cadastropessoa">CADASTRO DE MEMBROS</a></center>
+  
+  
+  
+  
+  <fieldset>
+  <legend>PESQUISA POR DATA</legend>
+	<div class="row">
+	<form action= "pesquisardata"    method="post" class="col s12">
+	<div class="row">
+	<div class="input-field cols12">
+	<label for="pesquisardata" class="active">Pesquisa por Data:</label>
+	<input name="pesquisardata" id="pesquisardata" class="validate">
+	<input class="waves-effect waves-light btn"    type="submit" value="Buscar"    >
+	
+	</div>
+	</div>
+	</form>
+	</div>
+	</fieldset>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<div class="row"></center>
+
+<fieldset>
+
+	<center><h3>TOTAL DE DIZIMOS E OFERTAS</h3></center>
+	
+	<table class="striped">
+     <th>NOME</th>
+	<th>DIZIMO</th>
+	<th>DATA</th>
+	<th>TIPO DE MISSÕES</th>
+	<th>MISSÕES</th>
+	<th>BENEFICENCIA</th>
+	<th>CONSTRUÇÃO</th>
+	<th>OFERTA</th>
+	<th>OUTRAS</th>
+	<th>ENCARGO MAQUINA</th>
+	<th>TOTAL</th>
+	
+	
+	
+
+<tr th:each="dizimo : ${dizimostotal}">
+<td th:text="${dizimo.nome}"></td>
+<td th:text="${dizimo.dizimo}"></td>
+<td th:text="${dizimo.data}"></td>
+<td th:text="${dizimo.tipomissoes}"></td>
+<td th:text="${dizimo.missoes}"></td>
+<td th:text="${dizimo.beneficencia}"></td>
+<td th:text="${dizimo.construcao}"></td>
+<td th:text="${dizimo.oferta}"></td>
+<td th:text="${dizimo.outras}"></td>
+<td th:text="${dizimo.encargo}"></td>
+<td th:text="${dizimo.total}"></td>
+
+
+</tr>
+<th>TOTAL DIZIMOS</th>
+<td th:text="${#numbers.formatCurrency(#aggregates.sum(dizimostotal.![total]))}">R$ 180,00</td>
+<th>ENCARGO MAQUINA(DEBITO/CREDITO)</th>
+<td th:text="${#numbers.formatCurrency(#aggregates.sum(dizimostotal.![encargo]))}">R$ 180,00</td>
+
+
+</table>
+
+</fieldset>
+
+
+
+<fieldset>
+
+
+	<center><h3>TOTAL DE DESPESAS</h3></center>
+	<table class="striped">
+
+	<th>NOME</th>
+	<th>DATA</th>
+	<th>DESCRIÇÃO</th>
+	<th>VALOR</th>
+	
+	
+	
+	
+
+<tr th:each="despesa : ${despesastotal}">
+<td th:text="${despesa.nome}"></td>
+<td th:text="${despesa.data}"></td>
+<td th:text="${despesa.descricao}"></td>
+<td th:text="${despesa.valor}"></td>
+
+  
+
+
+
+
+
+</tr>
+<th>TOTAL DESPESAS</th>
+	
+	
+	
+	
+<td th:text="${#numbers.formatCurrency(#aggregates.sum(despesastotal.![valor]))}">R$ 180,00</td>
+</table>
+</div>
+
+
+	</fieldset>
+	<fieldset>
+	<legend>RESUMO FINANCEIRO</legend>
+	
+	<table class="striped">
+     
+	
+</br>
+</br>
+
+<th>CAIXA</th>
+
+<td  th:text="${#numbers.formatCurrency(#aggregates.sum(dizimostotal.![total])-(#aggregates.sum(dizimostotal.![encargo])+#aggregates.sum(despesastotal.![valor])))}">R$ 180,00</td>
+  
+</tr>
+
+</table>
+	</fieldset>
+	
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+<meta charset="UTF-8">
+<title>Programa SpringBoot</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+ <style type="text/css">
+ 
+ 
+ table.striped>tbody>tr:nth-child(odd) {
+ 
+ background-color: rgba(158, 154, 154, 0.5);
+	
+}
+
+form input[type=submit]{
+color: white;
+
+}
+ 
+ 
+ </style>
+ 
+
+</head>
+<body>
+
+
+
+<center><H3>CADASTRO FORMA DE CONTRIBUIÇÃO</H3></center>
+  
+  <center> <a class="waves-effect waves-light btn" href="/cadastropessoa">CADASTRO DE MEMBROS</a></center>
+  
+ 
+
+<fieldset>
+ <legend>Cadastro</legend>
+<div class="row">
+<form action="salvarpagamento" id="formpagamento" method="post"  class="col s12"  onsubmit="return validarCampos()? true : false">
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="descricao"  >DESCRIÇÃO:</label>
+<input id="descricao" name="descricao" class="validate">
+</div>
+
+
+
+<div class="row">
+<div class="input-field col s12">
+<label class="active" for="porcentagem"  >PORCENTAGEM(%):</label>
+<input id="porcentagem" name="porcentagem" class="validate">
+</div>
+
+
+
+
+<input class="waves-effect waves-light btn" type="submit" value="Adicionar">
+</div>
+
+
+</form>
+</div>
+</fieldset>
+
+
+<fieldset>
+<legend>CADASTRO FORMAS DE CONTRIBUIÇÂO</legend>
+<table class="striped">
+
+	<th>ID</th>
+	<th>DESCRIÇÃO</th>
+	<th>PORCENTAGEM (%)</th>
+	<th>EXCLUIR</th>
+	
+
+<tr th:each="pagamento : ${pagamentos}">
+
+<td th:text="${pagamento.id}"></td>
+
+<td th:text="${pagamento.descricao}"></td>
+
+
+<td th:text="${pagamento.porcentagem}"></td>
+<td><a th:href="@{/removerpagamento/{idpagamento}(idpagamento=${pagamento.id})}" >Excluir</a></td>
+</tr>
+
+</table>
+</div>
+
+</fieldset>
+	
+	
+	<script type="text/javascript">
+	
+	function validarCampos(){
+		
+	descricao = document.getElementById('descricao').value;
+		tipo = document.getElementById('tipo').value;
+		porcentagem = document.getElementById('porcentagem').value;
+		
+		if(descricao === ''){
+			alert('Descricao deve ser Informada');
+			return false;
+		}else if(tipo === ''){
+			alert('Tipo deve ser Informado');
+			return false;
+	}else if(porcentagem === ''){
+		alert('porcentagem deve ser Informada');
+		return false;
+		
+	
+	}
+	
+	
+	
+		return true;
+	}
+	
+	</script>
+	
+</body>
+</html>
